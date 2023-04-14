@@ -15,13 +15,16 @@ from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT
 import json
 import urllib.request
 
+import weather_settings as ws
+
 # =============================================================================
 class Weather:
     ''' Get the API and build the string.
     '''
     def __init__(self) -> None:
+        self.settings = ws.Settings()
         self.weather = self.weather_description = self.feels_like = self.temperature = self.humidity = self.name = ""
-        self.addr = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=' + api_key
+        self.addr = 'https://api.openweathermap.org/data/2.5/weather?lat=' + self.settings.lat + '&lon=' + self.settings.long + '&appid=' + self.settings.api_key
         self.y = None
 
     def get_weather(self) -> None:
@@ -47,9 +50,6 @@ class Stringifier:
         self.weather.get_weather()
         self.weather.interpret_weather()
         return f"{self.weather.name} = {self.weather.weather}: {self.weather.weather_description}, {self.weather.feels_like}, {self.weather.temperature}, {self.weather.humidity}"
-
-a = Stringifier()
-print(a.build_string())
 
 # =============================================================================
 class Displayer:
@@ -151,12 +151,13 @@ def main():
 
     tk = Timekeeper()
     dd = Displayer(device)
+    a = Stringifier()
 
     dd.animate(tk.hours, tk.minutes, tk.seconds, -8, 1)
 
     counter = 0
-    weather_to_show = "Weather: " + str(counter)
-    
+    weather_to_show = a.build_string() + " > " + str(counter) 
+
     toggle = False  # Toggle the second indicator every second
     while True:
         toggle = not toggle
@@ -181,7 +182,7 @@ def main():
         # every 5 mins.
         if int(tk.minutes) % 5 == 0 and int(tk.seconds) == 5:
             counter += 1
-            weather_to_show = "Weather: " + str(counter)
+            weather_to_show = a.build_string() + " > " + str(counter) 
 
 
 # =============================================================================
