@@ -12,7 +12,11 @@ from luma.core.render import canvas
 from luma.core.legacy import text, show_message
 from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT
 
+# =============================================================================
 class Displayer:
+    ''' Display the hours minutes seconds on the MAX7219.
+    Provide simple animation also.
+    '''
     def __init__(self, device) -> None:
         self.idx_h = 0
         self.idx_col1 = 16
@@ -85,8 +89,10 @@ class Displayer:
         for current_y in range(9, 1, -1):
             helper(current_y)
 
-
+# =============================================================================
 class Timekeeper:
+    ''' Timekeeping class, simply getting data from datetime.
+    '''
     def __init__(self) -> None:
         self.hours = self.minutes = self.seconds = 0
         self.update_time()
@@ -96,7 +102,10 @@ class Timekeeper:
         self.minutes = datetime.now().strftime('%M')
         self.seconds = datetime.now().strftime('%S')
 
+# =============================================================================
 def main():
+    ''' Main function of the weather clock.
+    '''
     serial = spi(port=0, device=0, gpio=noop())
     device = max7219(serial, width=64, height=8, block_orientation=-90)
     device.contrast(50)
@@ -125,6 +134,6 @@ def main():
             dd.static_show(tk.hours, tk.minutes, tk.seconds, toggle)
             time.sleep(0.5)
 
-
+# =============================================================================
 if __name__ == "__main__":
     main()
