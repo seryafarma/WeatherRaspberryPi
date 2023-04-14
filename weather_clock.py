@@ -121,7 +121,7 @@ def main():
     toggle = False  # Toggle the second indicator every second
     while True:
         toggle = not toggle
-        sec = int(tk.seconds)
+        sec = datetime.now().second
         if sec == 59:
             # When we change minutes, animate the minute change
             dd.minute_change(tk.hours, tk.minutes, tk.seconds)
@@ -131,7 +131,7 @@ def main():
             full_msg = time.ctime()
             dd.animate(tk.hours, tk.minutes, tk.seconds, 1, 8)
             show_message(device, full_msg, fill="white", font=proportional(CP437_FONT))
-            time.sleep(2)
+            time.sleep(0.5)
             show_message(device, weather_to_show, fill="white", font=proportional(CP437_FONT))
             dd.animate(tk.hours, tk.minutes, tk.seconds, 8, 1)
         else:
@@ -140,7 +140,7 @@ def main():
             time.sleep(0.5)
 
         # every 5 mins.
-        if int(tk.minutes) % 5 == 0 and int(tk.seconds) == 0:
+        if int(tk.minutes) % 5 == 0 and int(tk.seconds) == 5:
             counter += 1
             weather_to_show = "Weather: " + str(counter)
 
