@@ -165,13 +165,13 @@ def main():
         if sec == 59:
             # When we change minutes, animate the minute change
             dd.minute_change(tk.hours, tk.minutes, tk.seconds)
+        elif sec == 10:
+            full_msg = time.ctime()
+            show_message(device, full_msg, fill="white", font=proportional(CP437_FONT))
         elif sec == 30:
             # Half-way through each minute, display the complete date/time,
             # animating the time display into and out of the abyss.
-            full_msg = time.ctime()
             dd.animate(tk.hours, tk.minutes, tk.seconds, 1, 8)
-            show_message(device, full_msg, fill="white", font=proportional(CP437_FONT))
-            time.sleep(0.5)
             show_message(device, weather_to_show, fill="white", font=proportional(CP437_FONT))
             dd.animate(tk.hours, tk.minutes, tk.seconds, 8, 1)
         else:
